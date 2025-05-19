@@ -1,103 +1,160 @@
-import Image from "next/image";
+import { Code, Terminal } from "lucide-react"
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <header className="mb-8">
+        <h1 className="text-2xl font-bold">Kubernetesテスト環境</h1>
+        <p className="text-gray-600">K8s勉強用の簡易リファレンス</p>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+      <main>
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold mb-4 flex items-center">
+            <Terminal className="h-5 w-5 mr-2" />
+            基本コマンド
+          </h2>
+          <div className="bg-gray-100 p-4 rounded-md overflow-x-auto">
+            <pre className="text-sm">
+              <code>{`# クラスター情報の確認
+kubectl cluster-info
+
+# ノード一覧の表示
+kubectl get nodes
+
+# 全てのリソースの表示
+kubectl get all
+
+# ポッドの作成
+kubectl run nginx --image=nginx
+
+# デプロイメントの作成
+kubectl create deployment nginx --image=nginx
+
+# サービスの公開
+kubectl expose deployment nginx --port=80 --type=NodePort
+
+# ログの表示
+kubectl logs <pod-name>
+
+# ポッドの詳細情報
+kubectl describe pod <pod-name>
+
+# リソースの削除
+kubectl delete pod <pod-name>
+kubectl delete deployment <deployment-name>
+kubectl delete service <service-name>`}</code>
+            </pre>
+          </div>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold mb-4 flex items-center">
+            <Code className="h-5 w-5 mr-2" />
+            YAML例
+          </h2>
+          <div className="bg-gray-100 p-4 rounded-md overflow-x-auto">
+            <pre className="text-sm">
+              <code>{`# シンプルなNginxデプロイメント
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+
+---
+# Nginxサービス
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP`}</code>
+            </pre>
+          </div>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">ローカル環境セットアップ</h2>
+          <ol className="list-decimal pl-5 space-y-2">
+            <li>
+              <strong>Minikubeのインストール:</strong>
+              <div className="bg-gray-100 p-2 rounded-md mt-1 overflow-x-auto">
+                <code>brew install minikube</code> (Mac) または
+                <br />
+                <code>choco install minikube</code> (Windows)
+              </div>
+            </li>
+            <li>
+              <strong>kubectlのインストール:</strong>
+              <div className="bg-gray-100 p-2 rounded-md mt-1 overflow-x-auto">
+                <code>brew install kubectl</code> (Mac) または
+                <br />
+                <code>choco install kubernetes-cli</code> (Windows)
+              </div>
+            </li>
+            <li>
+              <strong>クラスターの起動:</strong>
+              <div className="bg-gray-100 p-2 rounded-md mt-1 overflow-x-auto">
+                <code>minikube start</code>
+              </div>
+            </li>
+            <li>
+              <strong>ダッシュボードの起動:</strong>
+              <div className="bg-gray-100 p-2 rounded-md mt-1 overflow-x-auto">
+                <code>minikube dashboard</code>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold mb-4">主要概念</h2>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>
+              <strong>Pod:</strong> Kubernetesの最小単位。1つ以上のコンテナのグループ。
+            </li>
+            <li>
+              <strong>Deployment:</strong> Podの作成と更新を管理。レプリカ数の指定やローリングアップデートが可能。
+            </li>
+            <li>
+              <strong>Service:</strong> Podへのネットワークアクセスを提供。固定IPアドレスとDNS名を割り当て。
+            </li>
+            <li>
+              <strong>ConfigMap/Secret:</strong> 設定情報や機密情報をPodに提供。
+            </li>
+            <li>
+              <strong>Namespace:</strong> クラスター内のリソースをグループ化する仮想的な区画。
+            </li>
+            <li>
+              <strong>PersistentVolume:</strong> データの永続化のためのストレージリソース。
+            </li>
+          </ul>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      <footer className="mt-12 pt-4 border-t text-sm text-gray-500">
+        <p>個人的なK8s勉強用リファレンス - 2025</p>
       </footer>
     </div>
-  );
+  )
 }
