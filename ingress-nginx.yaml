@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: Nextjs-kubetest-takoyakidath
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: kubetest.takoyakidath.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: Nextjs-kubetest-takoyakidath
+                port:
+                  number: 80

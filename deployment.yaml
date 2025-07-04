@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubetest-takoyakidath
+  labels:
+    app: kubetest-takoyakidath
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubetest-takoyakidath
+  template:
+    metadata:
+      labels:
+        app: kubetest-takoyakidath
+    spec:
+      containers:
+        - name: app
+          image: takoyakidath/kubetest-takoyakidath:kube
+          ports:
+            - containerPort: 3000
