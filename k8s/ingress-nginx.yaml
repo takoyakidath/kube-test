@@ -12,6 +12,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: nkubetest-takoyakidath
+            name: kubetest-takoyakidath
             port:
               number: 80
