@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubetest-takoyakidath
+  namespace: default
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default  
+  source:
+    repoURL: https://github.com/takoyakidath/kube-test.git 
+    targetRevision: main  
+    path: k8s             # manifests配置パス（k8s/deployment.yaml, service.yaml などがある場所）
+  destination:
+    server: https://kubernetes.default.svc  # in-cluster
+    namespace: kubetest-takoyakidath        # デプロイ先のNamespace（自動作成される）
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true
+      - Retry=true
+      - PrunePropagationPolicy=foreground
