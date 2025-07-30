@@ -5,13 +5,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: kubetest.takoyakidath.xyz
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: kubetest-takoyakidath
-                port:
-                  number: 80
+  - host: takoyaki-test.uniproject.jp
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nkubetest-takoyakidath
+            port:
+              number: 80
