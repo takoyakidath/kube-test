@@ -27,7 +27,7 @@ export default function RootLayout({
         <meta name="robots" content="noindex, nofollow" />
         <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
       </head>
-      <body className="font-sans">{children}</body>
+      <body>{children}</body>
     </html>
   )
 }
