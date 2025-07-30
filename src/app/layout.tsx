@@ -1,8 +1,5 @@
 import type React from "react"
 import "@/app/globals.css"
-import { Inter } from "next/font/google"
-
-const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
   title: "Kubernetesテスト環境",
@@ -30,7 +27,7 @@ export default function RootLayout({
         <meta name="robots" content="noindex, nofollow" />
         <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className="font-sans">{children}</body>
     </html>
   )
 }
